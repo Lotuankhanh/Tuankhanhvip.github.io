@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>🔐 Kiểm tra bản quyền</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      margin: auto;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      color: gray;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="license-container">
+  <h2>🔐 Nhập KEY để mở tool</h1>
+  <input type="text" id="license-key" placeholder="Nhập KEY tại đây...">
+  <button onclick="verifyKey()">Mở khóa</button>
+  <div id="license-msg" class="result"></div>
+</div>
+
+<div class="container hidden" id="main-tool">
+  <h2>🎯 Tool Tài Xỉu MD5</h2>
+
+  <div>
+    <h4>🎲 Tài Xỉu từ mã phiên</h4>
+    <input type="text" id="maphien" placeholder="Nhập mã phiên...">
+    <button onclick="tinhTuMaPhien()">Tính</button>
+    <div id="result1" class="result"></div>
+  </div>
+
+  <hr style="margin: 25px 0;">
+
+  <div>
+    <h4>🎲 Tài Xỉu từ mã MD5</h4>
+    <input type="text" id="md5" placeholder="Nhập mã MD5...">
+    <button onclick="tinhTuMD5()">Tính</button>
+    <div id="result2" class="result"></div>
+  </div>
+
+  <div class="footer">© Bản quyền Tuankhanh✅</div>
+</div>
+
+<script>
+  // KEY hợp lệ có thể là nhiều cái, thêm tại đây
+  const validKeys = ["KHANHVIP", "KHANHVER1","  TUANKHANH"];
+
+  function verifyKey() {
+    const inputKey = document.getElementById("license-key").value.trim();
+    const msg = document.getElementById("license-msg");
+
+    if (validKeys.includes(inputKey)) {
+      msg.style.color = "green";
+      msg.textContent = "✅ Mở khóa thành công!";
+      document.getElementById("license-container").classList.add("hidden");
+      document.getElementById("main-tool").classList.remove("hidden");
+    } else {
+      msg.style.color = "red";
+      msg.textContent = "❌ KEY sai rồi thằng ngu!";
+    }
+  }
+
+  function tinhTuMaPhien() {
+    const maPhien = document.getElementById("maphien").value.trim();
+    const result = document.getElementById("result1");
+
+    if (!maPhien) {
+      result.innerHTML = "❌ Mã phiên không được để trống!";
+      result.style.color = "red";
+      return;
+    }
+
+    const hash = md5(maPhien);
+    const value = parseInt(hash, 15) % 90;
+    result.innerHTML = `🔵 TÀI: ${value}%<br>🟢 XỈU: ${100 - value}%`;
+    result.style.color = "blue";
+  }
+
+  function tinhTuMD5() {
+    const md5Input = document.getElementById("md5").value.trim().toLowerCase();
+    const result = document.getElementById("result2");
+
+    const isValid = /^[0-9a-f]{32}$/.test(md5Input);
+    if (!isValid) {
+      result.innerHTML = "❌ Mã không hợp lệ!";
+      result.style.color = "red";
+      return;
+    }
+
+    const value = parseInt(md5Input, 15) % 90;
+    result.innerHTML = `🔵 TÀI: ${value}%<br>🟢 XỈU: ${100 - value}%`;
+    result.style.color = "green";
+  }
+</script>
+
+<!-- Thư viện MD5 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+
+</body>
+</html>
